@@ -1,0 +1,44 @@
+:root {
+  --bg-primary: #2C1810;
+  --bg-card: #3D2314;
+  --bg-secondary: #4E2E1A;
+  --accent: #C8956A;
+  --accent-hover: #D4A882;
+  --text-primary: #F5E6D3;
+  --text-secondary: #C4A882;
+  --border: #5C3D2E;
+  --success: #8DAF7A;
+  --error: #C47A6A;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
