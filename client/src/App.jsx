@@ -6,6 +6,7 @@ import RecipeList from './pages/RecipeList.jsx'
 import RecipeNew from './pages/RecipeNew.jsx'
 import RecipeDetail from './pages/RecipeDetail.jsx'
 import ShoppingList from './pages/ShoppingList.jsx'
+import IngredientBrowser from './pages/IngredientBrowser.jsx'
 import './App.css'
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <div className="nav-links">
           <Link to="/recipes">Recipes</Link>
           <Link to="/shopping-list">Shopping List</Link>
+          <Link to="/ingredients">🏷️ By Ingredient</Link>
           <button onClick={logout} className="btn-logout">Logout</button>
         </div>
       </nav>
@@ -59,6 +61,7 @@ function App() {
           <Route path="/recipes/new" element={<RecipeNew />} />
           <Route path="/recipes/:id" element={<RecipeDetail />} />
           <Route path="/shopping-list" element={<ShoppingList />} />
+          <Route path="/ingredients" element={<IngredientBrowser />} />
           <Route path="*" element={<Navigate to="/recipes" />} />
         </Routes>
       </main>

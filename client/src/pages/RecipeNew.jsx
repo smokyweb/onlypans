@@ -18,6 +18,11 @@ export default function RecipeNew() {
   const [pasteText, setPasteText] = useState('')
   const [parsed, setParsed] = useState(false)
 
+  // PDF tab state
+  const [pdfFile, setPdfFile] = useState(null)
+  const [pdfParsing, setPdfParsing] = useState(false)
+  const [pdfParsed, setPdfParsed] = useState(false)
+
   const addIngredient = () => {
     setIngredients([...ingredients, { name: '', amount: '', unit: '' }])
   }
@@ -92,6 +97,29 @@ export default function RecipeNew() {
     setInputMethod('type')
   }
 
+  const parsePdf = async () => {
+    if (!pdfFile) return
+    setPdfParsing(true)
+    setError('')
+    try {
+      const formData = new FormData()
+      formData.append('pdf', pdfFile)
+      const { data } = await api.post('/recipes/extract-from-pdf', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      setTitle(data.title || '')
+      setDescription(data.description || '')
+      if (data.ingredients?.length > 0) setIngredients(data.ingredients)
+      if (data.instructions) setInstructions(data.instructions)
+      setPdfParsed(true)
+      setInputMethod('type')
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to parse PDF')
+    } finally {
+      setPdfParsing(false)
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
@@ -139,6 +167,13 @@ export default function RecipeNew() {
         >
           Paste
         </button>
+        <button
+          type="button"
+          className={`input-tab${inputMethod === 'pdf' ? ' active' : ''}`}
+          onClick={() => setInputMethod('pdf')}
+        >
+          PDF
+        </button>
       </div>
 
       {error && <p className="error-msg">{error}</p>}
@@ -166,6 +201,33 @@ export default function RecipeNew() {
           {parsed && (
             <div className="parse-result">
               <p>Parsed successfully! Switched to Type tab to review and submit.</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {inputMethod === 'pdf' && (
+        <div className="paste-area">
+          <p style={{ color: 'var(--text-secondary)', marginBottom: 12, fontSize: '0.9rem' }}>
+            Upload a PDF recipe file to extract its contents automatically.
+          </p>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={e => { setPdfFile(e.target.files[0]); setPdfParsed(false) }}
+          />
+          <button
+            type="button"
+            className="btn-primary"
+            style={{ marginTop: 12 }}
+            onClick={parsePdf}
+            disabled={!pdfFile || pdfParsing}
+          >
+            {pdfParsing ? 'Extracting...' : 'Extract from PDF'}
+          </button>
+          {pdfParsed && (
+            <div className="parse-result">
+              <p>Extracted successfully! Switched to Type tab to review and submit.</p>
             </div>
           )}
         </div>

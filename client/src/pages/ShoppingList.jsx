@@ -1,23 +1,58 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import api from '../api'
 
 export default function ShoppingList() {
   const [recipes, setRecipes] = useState([])
   const [selected, setSelected] = useState(new Set())
   const [shoppingList, setShoppingList] = useState(null)
+  const [recommendations, setRecommendations] = useState([])
   const [loading, setLoading] = useState(true)
+  const location = useLocation()
 
   useEffect(() => {
+    // Pre-select recipes from ?recipes=1,2,3 query param
+    const params = new URLSearchParams(location.search)
+    const preselect = params.get('recipes')
+    const preselectIds = preselect ? preselect.split(',').map(Number).filter(Boolean) : []
+
     api.get('/recipes').then(({ data }) => {
       setRecipes(data)
+      if (preselectIds.length > 0) {
+        setSelected(new Set(preselectIds))
+      }
       setLoading(false)
     }).catch(() => setLoading(false))
   }, [])
+
+  // Fetch recommendations when selection changes
+  useEffect(() => {
+    if (selected.size === 0) { setRecommendations([]); return }
+    const selectedArr = [...selected]
+    Promise.all(selectedArr.map(id => api.get(`/recipes/${id}/recommendations`).then(r => r.data).catch(() => [])))
+      .then(results => {
+        const merged = {}
+        results.flat().forEach(r => {
+          if (!selected.has(r.id)) {
+            if (!merged[r.id] || r.shared_count > merged[r.id].shared_count) {
+              merged[r.id] = r
+            }
+          }
+        })
+        setRecommendations(Object.values(merged).sort((a, b) => b.shared_count - a.shared_count).slice(0, 5))
+      })
+  }, [selected])
 
   const toggleRecipe = (id) => {
     const next = new Set(selected)
     if (next.has(id)) next.delete(id)
     else next.add(id)
+    setSelected(next)
+  }
+
+  const addRecommended = (id) => {
+    const next = new Set(selected)
+    next.add(id)
     setSelected(next)
   }
 
@@ -67,6 +102,22 @@ export default function ShoppingList() {
               </div>
             ))}
           </div>
+
+          {/* Recommendations */}
+          {recommendations.length > 0 && (
+            <div className="recommendations-panel" style={{ marginTop: 20, marginBottom: 20 }}>
+              <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}>You might also like</h3>
+              {recommendations.map(r => (
+                <div key={r.id} className="recommendation-row">
+                  <div className="recommendation-info">
+                    <span className="recipe-title">{r.title}</span>
+                    <span className="match-badge">{r.shared_count} shared ingredient{r.shared_count !== 1 ? 's' : ''}</span>
+                  </div>
+                  <button className="btn-add-rec" onClick={() => addRecommended(r.id)}>+ Add</button>
+                </div>
+              ))}
+            </div>
+          )}
 
           <button
             className="btn-primary"

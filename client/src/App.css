@@ -683,3 +683,94 @@
     flex-wrap: wrap;
   }
 }
+
+/* ===== Ingredient Browser ===== */
+.ingredient-browser .subtitle {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+.ingredient-search {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.ingredient-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip-selected { background: var(--accent); color: var(--bg) !important; border-color: var(--accent); font-weight: 600; }
+.chip-count { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 1px 6px; font-size: 11px; }
+.matching-recipes { margin-top: 8px; }
+.matching-recipes h2 { margin-bottom: 14px; color: var(--text-primary); }
+.recipe-card-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.recipe-card-row:hover { border-color: var(--accent); }
+.recipe-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+.recipe-card-info { display: flex; flex-direction: column; gap: 4px; }
+.match-badge { font-size: 12px; color: var(--accent); font-weight: 500; }
+.muted { color: var(--text-secondary); font-size: 14px; }
+
+/* ===== Recommendations on Shopping List ===== */
+.recommendations-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.recommendation-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.recommendation-row:last-child { border-bottom: none; }
+.recommendation-info { display: flex; flex-direction: column; gap: 2px; }
+.btn-add-rec {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid #8DAF7A;
+  color: #8DAF7A;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.btn-add-rec:hover { background: #8DAF7A; color: var(--bg); }
