@@ -31,7 +31,7 @@ db.exec(`
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     recipe_id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    amount REAL,
+    amount TEXT,
     unit TEXT,
     FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
   );

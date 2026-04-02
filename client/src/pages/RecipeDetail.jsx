@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+
 import api from '../api'
 
 export default function RecipeDetail() {
@@ -70,7 +71,10 @@ export default function RecipeDetail() {
             </>
           )}
 
-          <button onClick={handleDelete} className="btn-delete">Delete Recipe</button>
+          <div className="recipe-actions" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+            <Link to={`/recipes/${id}/edit`} className="btn-secondary">✏️ Edit Recipe</Link>
+            <button onClick={handleDelete} className="btn-delete">Delete Recipe</button>
+          </div>
         </div>
 
         <div className="recipe-sidebar">

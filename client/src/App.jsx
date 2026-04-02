@@ -7,6 +7,7 @@ import RecipeNew from './pages/RecipeNew.jsx'
 import RecipeDetail from './pages/RecipeDetail.jsx'
 import ShoppingList from './pages/ShoppingList.jsx'
 import IngredientBrowser from './pages/IngredientBrowser.jsx'
+import RecipeEdit from './pages/RecipeEdit.jsx'
 import './App.css'
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
           <Route path="/recipes/:id" element={<RecipeDetail />} />
           <Route path="/shopping-list" element={<ShoppingList />} />
           <Route path="/ingredients" element={<IngredientBrowser />} />
+          <Route path="/recipes/:id/edit" element={<RecipeEdit />} />
           <Route path="*" element={<Navigate to="/recipes" />} />
         </Routes>
       </main>
